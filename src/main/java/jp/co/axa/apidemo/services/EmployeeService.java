@@ -1,18 +1,20 @@
 package jp.co.axa.apidemo.services;
 
-import jp.co.axa.apidemo.entities.Employee;
+import jp.co.axa.apidemo.api.models.request.EmployeeCreateRequest;
+import jp.co.axa.apidemo.api.models.request.EmployeeUpdateRequest;
+import jp.co.axa.apidemo.api.models.response.EmployeeResponse;
+import jp.co.axa.apidemo.api.models.response.EmployeesResponse;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeService {
+    EmployeesResponse retrieveEmployees();
 
-    public List<Employee> retrieveEmployees();
+    Optional<EmployeeResponse> getEmployee(Long id);
 
-    public Employee getEmployee(Long employeeId);
+    void saveEmployee(EmployeeCreateRequest createRequest);
 
-    public void saveEmployee(Employee employee);
+    void deleteEmployee(Long id);
 
-    public void deleteEmployee(Long employeeId);
-
-    public void updateEmployee(Employee employee);
+    void updateEmployee(EmployeeUpdateRequest updateRequest);
 }

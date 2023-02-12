@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Employees list response model
+ */
 @Getter
 @Setter
 @NoArgsConstructor

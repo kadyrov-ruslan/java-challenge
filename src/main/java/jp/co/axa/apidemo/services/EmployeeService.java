@@ -7,8 +7,11 @@ import jp.co.axa.apidemo.api.models.response.EmployeesResponse;
 
 import java.util.Optional;
 
+/**
+ * Provides methods to CRUD employees
+ */
 public interface EmployeeService {
-    EmployeesResponse retrieveEmployees();
+    EmployeesResponse getAllEmployees();
 
     Optional<EmployeeResponse> getEmployee(Long id);
 
@@ -16,5 +19,5 @@ public interface EmployeeService {
 
     void deleteEmployee(Long id);
 
-    void updateEmployee(EmployeeUpdateRequest updateRequest);
+    void updateEmployee(Long id, EmployeeUpdateRequest updateRequest);
 }

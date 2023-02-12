@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Employee update request model
+ */
 @Getter
 @Setter
 @JsonRootName("employee")

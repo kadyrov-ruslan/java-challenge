@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Single employee info response model
+ */
 @Getter
 @Setter
 @NoArgsConstructor

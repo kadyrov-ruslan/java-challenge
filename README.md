@@ -1,5 +1,5 @@
 # java-challenge
-Java challenger for AXA
+Java challenge for AXA LI
 
 ### How to use this spring-boot project
 
@@ -13,43 +13,36 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 
 > Don't forget to set the `JDBC URL` value as `jdbc:h2:mem:testdb` for H2 UI.
 
+### Experience in Java
+I have 2 years experience in Java and I have been using Spring Boot for 2 years as well.
 
+### What was done
+- Made project working as expected (employee saving was not working properly)
+- Modified project structure (packages related)
+- Dramatically changed employee controller
+  - Changed request mappings, endpoints names
+  - Added request and response models instead of DAO manipulation at controller
+  - Added models fields validation
+  - Changed endpoints signatures to have returned type
+  - Added HTTP statuses according to REST architectural style
+  - Replaced property DI with constructor DI
+- Improved documentation and comments
+  - Added doc comments for interfaces and models
+  - Updated swagger version
+  - Added detailed swagger documentation of employee controller 
+- Added in-memory caching logic for database calls
+- Implemented tests for controller, service and repository (pretty high coverage now)
 
-### Instructions
-
-- download the zip file of this project
-- create a repository in your own github named 'java-challenge'
-- clone your repository in a folder on your machine
-- extract the zip file in this folder
-- commit and push
-
-- Enhance the code in any ways you can see, you are free! Some possibilities:
-    - Add tests
-    - Change syntax
-    - Protect controller end points
-    - Add caching logic for database calls
-    - Improve doc and comments
-    - Fix any bug you might find
-- Edit readme.md and add any comments. It can be about what you did, what you would have done if you had more time, etc.
-- Send us the link of your repository.
-
-#### Restrictions
-- use java 8
-
-
-#### What we will look for
-- Readability of your code
-- Documentation
-- Comments in your code
-- Appropriate usage of spring boot
-- Appropriate usage of packages
-- Is the application running as expected
-- No performance issues
-
-#### Your experience in Java
-
-Please let us know more about your Java experience in a few sentences. For example:
-
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years
+### What can be improved next
+If I had more time, I would:
+- Replace in-memory caching logic for database calls with Redis or any other non in-memory cache
+- Continue refactoring of project architecture according to team/company code style and development approach (e.g. Domain Driven Development)
+- Improve models validation
+- Add detailed logging
+- Add integration tests
+- Improve existing tests 
+  - Current tests rely on injected in-memory H2 database, so using separate test bean or mock would be much better
+- Protect controller endpoints
+  - Add auth controller for authentication and obtaining JWT token
+  - Secure existing controller to make request available only for authorized users
+- Probably add Docker support for project, make maven deploy project as a ready docker image

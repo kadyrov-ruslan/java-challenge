@@ -39,12 +39,12 @@ public class EmployeeRepositoryTest {
 
     @Test
     public void findById_nonExistingEmployee_shouldNotBeCached() {
-        Assertions.assertFalse(getCachedEmployee(5L).isPresent());
+        Assertions.assertFalse(getCachedEmployee(100L).isPresent());
     }
 
     @Test
     public void save_cacheShouldBeEvicted() {
-        long id = 1L;
+        long id = getExistingEmployee().getId();
         // Cached after retrieving
         Optional<Employee> employee = repository.findById(id);
         Assertions.assertTrue(employee.isPresent());
@@ -61,7 +61,7 @@ public class EmployeeRepositoryTest {
 
     @Test
     public void delete_cacheShouldBeEvicted() {
-        long id = 2L;
+        long id = getExistingEmployee().getId();
         // Cached after retrieving
         Optional<Employee> employee1 = repository.findById(id);
         Assertions.assertEquals(employee1, getCachedEmployee(id));
@@ -73,5 +73,10 @@ public class EmployeeRepositoryTest {
 
     private Optional<Employee> getCachedEmployee(long id) {
         return Optional.ofNullable(cacheManager.getCache("employees")).map(x -> x.get(id, Employee.class));
+    }
+
+    // TODO move to common test utils
+    private Employee getExistingEmployee() {
+        return repository.findAll().get(0);
     }
 }

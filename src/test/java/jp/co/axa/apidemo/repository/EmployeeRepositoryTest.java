@@ -23,7 +23,7 @@ public class EmployeeRepositoryTest {
     EmployeeRepository repository;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         repository.save(new Employee(1L, "John", 3500, "IT"));
         repository.save(new Employee(2L, "Anna", 5200, "Finance"));
     }
@@ -43,10 +43,32 @@ public class EmployeeRepositoryTest {
     }
 
     @Test
-    public void save_newEmployee_shouldBeCached() {
-        repository.save(new Employee(3L, "Ayako", 4500, "HR"));
-        Optional<Employee> employee = repository.findById(3L);
-        Assertions.assertEquals(employee, getCachedEmployee(3L));
+    public void save_cacheShouldBeEvicted() {
+        long id = 1L;
+        // Cached after retrieving
+        Optional<Employee> employee = repository.findById(id);
+        Assertions.assertTrue(employee.isPresent());
+        Assertions.assertTrue(getCachedEmployee(id).isPresent());
+
+        // Evicted from cache after updating
+        repository.save(new Employee(id, employee.get().getName(), 40500, employee.get().getDepartment()));
+        Assertions.assertFalse(getCachedEmployee(id).isPresent());
+
+        // After retrieving, cached again
+        repository.findById(id);
+        Assertions.assertTrue(getCachedEmployee(id).isPresent());
+    }
+
+    @Test
+    public void delete_cacheShouldBeEvicted() {
+        long id = 2L;
+        // Cached after retrieving
+        Optional<Employee> employee1 = repository.findById(id);
+        Assertions.assertEquals(employee1, getCachedEmployee(id));
+
+        // Evicted from cache after deletion
+        repository.deleteById(id);
+        Assertions.assertFalse(getCachedEmployee(id).isPresent());
     }
 
     private Optional<Employee> getCachedEmployee(long id) {

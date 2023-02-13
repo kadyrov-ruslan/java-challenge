@@ -1,6 +1,5 @@
 package jp.co.axa.apidemo.api.controllers;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,8 +11,13 @@ import jp.co.axa.apidemo.api.models.response.EmployeesResponse;
 import jp.co.axa.apidemo.services.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @ApiOperation("Provides REST API to CRUD employees")
@@ -52,10 +56,11 @@ public class EmployeeController {
 
     @ApiOperation(value = "Creates new employee")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "New employee is successfully created")
+            @ApiResponse(code = 201, message = "New employee is successfully created"),
+            @ApiResponse(code = 400, message = "Invalid input")
     })
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody EmployeeCreateRequest createRequest) {
+    public ResponseEntity<?> create(@Valid @RequestBody EmployeeCreateRequest createRequest) {
         employeeService.saveEmployee(createRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -73,10 +78,11 @@ public class EmployeeController {
     @ApiOperation(value = "Updates existing employee")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Employee is successfully updated"),
+            @ApiResponse(code = 400, message = "Invalid input"),
             @ApiResponse(code = 404, message = "Employee with provided id does not exist")
     })
     @PutMapping("{id}")
-    public ResponseEntity<?> update(@RequestBody EmployeeUpdateRequest updateRequest,
+    public ResponseEntity<?> update(@Valid @RequestBody EmployeeUpdateRequest updateRequest,
                                     @PathVariable Long id) {
         Optional<EmployeeResponse> emp = employeeService.getEmployee(id);
         if (emp.isPresent()) {
@@ -85,5 +91,17 @@ public class EmployeeController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

@@ -1,6 +1,8 @@
 package jp.co.axa.apidemo.repository.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -12,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "EMPLOYEE")
 public class Employee {
     @Getter

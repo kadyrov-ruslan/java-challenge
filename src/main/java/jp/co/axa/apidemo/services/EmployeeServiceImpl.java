@@ -53,6 +53,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void deleteEmployee(Long id) {
-        employeeRepository.deleteById(id);
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isPresent())
+            employeeRepository.deleteById(id);
     }
 }

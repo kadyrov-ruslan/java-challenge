@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonRootName("employee")
 public class EmployeeResponse {
+    private long id;
     private String name;
     private Integer salary;
     private String department;
